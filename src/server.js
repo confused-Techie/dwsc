@@ -31,7 +31,7 @@ class Server {
 
   async initialize() {
     this.log.addLogMethod(this.log.console);
-    this.log.addLogMethod(this.log.cache);
+    this.log.addLogMethod(this.log.cacheFunc.bind(this.log));
 
     await this.api.initialize();
 

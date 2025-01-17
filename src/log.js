@@ -64,7 +64,7 @@ class Log {
       gelf.version = "1.1";
     }
     if (!this.isSuppliedString(gelf.host)) {
-      gelf.host = "stp";
+      gelf.host = "logger";
     }
     if (!this.isSuppliedString(gelf.short_message)) {
       if (this.isSuppliedString(gelf.full_message)) {
@@ -104,7 +104,7 @@ class Log {
     // TODO use proper level
   }
 
-  cache(obj) {
+  cacheFunc(obj) {
     this.cache.push(obj);
   }
 
