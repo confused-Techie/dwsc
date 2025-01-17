@@ -22,7 +22,7 @@ describe("callstack", () => {
 
   test("adds objects without issue", () => {
     callStack.addCall("object", { key: "value" });
-    console.log(callStack);
+
     expect(callStack.calls.object).toBeDefined();
     expect(callStack.calls.object.content.key).toBe("value");
     expect(callStack.calls.object.time).toBeDefined();
