@@ -93,7 +93,7 @@ class Log {
   }
 
   // Send Methods
-  addLogMethod(funct) {
+  addLogMethod(func) {
     if (typeof func === "function") {
       this.send.push(func);
     }
