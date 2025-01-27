@@ -55,7 +55,7 @@ class Operation {
 
     if (this.config.hasOwnProperty("x-posthandler") && typeof this.config["x-posthandler"] === "function") {
       // TODO: What do we pass them? What do they return?
-      await this.config["posthandler"]();
+      await this.config["x-posthandler"]();
     }
 
     // TODO: What do we do now? Are we done?

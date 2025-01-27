@@ -40,7 +40,11 @@ class Server {
 
     userInitFunc(this);
 
-    this.api.route(this.controllers);
+    if (this.controllers) {
+      this.api.route(this.controllers);
+    } else {
+      this.log.crit("No controllers assigned the server instance. Routing will not work");
+    }
   }
 
   async start() {

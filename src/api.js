@@ -23,8 +23,6 @@ class API {
 
     // Basic Setup
     this.app.use(compression());
-
-    // TODO call conf based setup function
   }
 
   route(obj) {
