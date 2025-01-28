@@ -11,7 +11,7 @@ class Server {
     } else {
       // If we can't find their function, lets just
       // provide a shim
-      return () => {};
+      return () => { console.warn("Unable to locate user config function!"); };
     }
   }
 
@@ -36,7 +36,7 @@ class Server {
     await this.api.initialize();
 
     // Call user init func
-    const userInitFunc = this.locateUserInit(this._cwd);
+    const userInitFunc = Server.locateUserInit(this._cwd);
 
     userInitFunc(this);
 

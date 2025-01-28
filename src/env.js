@@ -11,7 +11,7 @@ class Env {
       res: opts.res
     };
     this.operation = opts.operation; // Data about the object containing the current endpoint
-
+    this.server = opts.server;
   }
 
   // Here we should setup all possible methods to expose to the user, as well
