@@ -1,25 +1,31 @@
 const path = require("path");
 const supertest = require("supertest");
 const Server = require("../src/server.js");
+const serverHandler = require("../src/server_handler.js");
 
 describe("integration: project-1", () => {
 
   let request, server;
 
   beforeAll(async () => {
-    server = new Server({
+    // server = new Server({
+    //   args: null,
+    //   cwd: path.resolve("./test/fixtures/project-1")
+    // });
+    //
+    // await server.initialize();
+    // await server.start();
+    server = await serverHandler.start({
       args: null,
       cwd: path.resolve("./test/fixtures/project-1")
     });
-
-    await server.initialize();
-    await server.start();
 
     request = supertest("http://localhost:8080");
   });
 
   afterAll(async () => {
-    await server.stop();
+    //await server.stop();
+    await serverHandler.stop(server);
   });
 
   test("server started up and is listening", (done) => {

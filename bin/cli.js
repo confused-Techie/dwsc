@@ -1,27 +1,24 @@
 #!/usr/bin/env node
 
 const process = require("node:process");
-const Server = require("../src/server.js");
+const serverHandler = require("../src/server_handler.js");
 const args = process.argv.slice(2);
 
-const server = new Server({
-  args: args,
-  cwd: process.cwd()
-});
+let server;
 
 (async () => {
-  await server.initialize();
-  await server.start();
+  server = await serverHandler.start({
+    args: args,
+    cwd: process.cwd();
+  });
 })();
 
 process.on("SIGTERM", async () => {
   // Termination signal
-  await server.stop();
-  process.exit(0); // TODO issues closing server
+  await serverHandler.stop(server);
 });
 
 process.on("SIGINT", async () => {
   // Keyboard Interrupt
-  await server.stop();
-  process.exit(0); // TODO issues closing server
+  await serverHandler.stop(server);
 });
