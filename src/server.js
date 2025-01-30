@@ -27,6 +27,7 @@ class Server {
     this.data;
     this.tasks;
     this.cache;
+    this.globals = {};
   }
 
   async initialize() {
