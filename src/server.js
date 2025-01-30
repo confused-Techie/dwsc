@@ -28,6 +28,7 @@ class Server {
     this.tasks;
     this.cache;
     this.globals = {};
+    this.models = {};
   }
 
   async initialize() {
