@@ -1,4 +1,5 @@
 const CallStack = require("./callStack.js");
+const craftResponse = require("./utils/craftResponse.js");
 
 module.exports =
 class Env {
@@ -54,6 +55,17 @@ class Env {
 
   // A flexible response method being able to many parameters and convert them
   // into a proper response
+  respond_new(content, respObj) {
+    const fullRespObj = craftResponse.combineResponses(respObj, this.operation.config?.responses ?? {});
+    craftResponse.applySpec(fullRespObj, this.http.res);
+
+    if (content) {
+      this.http.res.send(content);
+    } else {
+      this.http.res.send();
+    }
+  }
+
   respond(opts) {
     // Whie originally this was much more fleshed out.
     // ExpressJS is so skilled in this area, we may be able to just rely on them
