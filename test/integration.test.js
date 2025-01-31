@@ -8,13 +8,6 @@ describe("integration: project-1", () => {
   let request, server;
 
   beforeAll(async () => {
-    // server = new Server({
-    //   args: null,
-    //   cwd: path.resolve("./test/fixtures/project-1")
-    // });
-    //
-    // await server.initialize();
-    // await server.start();
     server = await serverHandler.start({
       args: null,
       cwd: path.resolve("./test/fixtures/project-1")
@@ -24,7 +17,6 @@ describe("integration: project-1", () => {
   });
 
   afterAll(async () => {
-    //await server.stop();
     await serverHandler.stop(server);
   });
 
