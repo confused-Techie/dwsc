@@ -1,5 +1,6 @@
 const Operation = require("./operation.js");
 const parameters = require("./parameters.js");
+const convertOasPathsToExpress = require("./utils/convertOasPathsToExpress.js");
 
 module.exports =
 class Route {
@@ -47,78 +48,83 @@ class Route {
 
       // Then setup the endpoint in ExpressJS depending on the method
       // (We bind each operation to it's own self, otherwise it inherits ExpressJS)
+      let func;
+
       switch(key) {
         case "get":
-          this.express.get(this.routePath, middleware, operation.handle.bind(operation));
+          func = "get";
           break;
         case "put":
-          this.express.put(this.routePath, middleware, operation.handle);
+          func = "put";
           break;
         case "post":
-          this.express.post(this.routePath, middleware, operation.handle);
+          func = "post";
           break;
         case "delete":
-          this.express.delete(this.routePath, middleware, operation.handle);
+          func = "delete";
           break;
         case "options":
           // TODO Should we handle here? Or pass along?
+          break;
         case "head":
-          this.express.head(this.routePath, middleware, operation.handle);
+          func = "head";
           break;
         case "patch":
-          this.express.patch(this.routePath, middleware, operation.handle);
+          func = "patch";
           break;
         case "trace":
-          this.express.trace(this.routePath, middleware, operation.handle);
+          func = "trace";
           break;
         // Begin supporting ExpressJS specific supported methods, even if Swagger doesn't
         case "x-checkout":
-          this.express.checkout(this.routePath, middleware, operation.handle);
+          func = "checkout";
           break;
         case "x-copy":
-          this.express.copy(this.routePath, middleware, operation.handle);
+          func = "copy";
           break;
         case "x-lock":
-          this.express.lock(this.routePath, middleware, operation.handle);
+          func = "lock";
           break;
         case "x-merge":
-          this.express.merge(this.routePath, middleware, operation.handle);
+          func = "merge";
           break;
         case "x-mkactivity":
-          this.express.mkactivity(this.routePath, middleware, operation.handle);
+          func = "mkactivity";
           break;
         case "x-mkcol":
-          this.express.mkcol(this.routePath, middleware, operation.handle);
+          func = "mkcol";
           break;
         case "x-move":
-          this.express.move(this.routePath, middleware, operation.handle);
+          func = "move";
           break;
         case "x-m-search":
-          this.express["m-search"](this.routePath, middleware, operation.handle);
+          func = "m-search";
           break;
         case "x-notify":
-          this.express.notify(this.routePath, middleware, operation.handle);
+          func = "notify";
           break;
         case "x-purge":
-          this.express.purge(this.routePath, middleware, operation.handle);
+          func = "purge";
           break;
         case "x-report":
-          this.express.report(this.routePath, middleware, operation.handle);
+          func = "report";
           break;
         case "x-search":
-          this.express.search(this.routePath, middleware, operation.handle);
+          func = "search";
           break;
         case "x-subscribe":
-          this.express.subscribe(this.routePath, middleware, operation.handle);
+          func = "subscribe";
           break;
         case "x-unlock":
-          this.express.unlock(this.routePath, middleware, operation.handle);
+          func = "unlock";
           break;
         case "x-unsubscribe":
-          this.express.unsibscribe(this.routePath, middleware, operation.handle);
+          func = "unsubscribe";
           break;
         // Maybe look at other official methods neither don't support?
       }
+
+      this.express[func](convertOasPathsToExpress(this.routePath), middleware, operation.handle.bind(operation));
 
     }
   }
