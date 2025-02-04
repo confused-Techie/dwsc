@@ -68,7 +68,7 @@ module.exports = {
 
     if (spec[httpCode].content) {
       // Since the majority of the content specification handles format of the actual
-      // data, which we won't modify, lets just take head of the content type of the
+      // data, which we won't modify, lets just take heed of the content type of the
       // data specification.
       const contentType = Object.keys(spec[httpCode].content);
       if (contentType.length > 1) {
