@@ -18,44 +18,9 @@ class Env {
   // Here we should setup all possible methods to expose to the user, as well
   // as find a way to load a configured list of modules to expose as well.
 
-  // Generic HTTP Return Status Code Helpers
-  pass(resp) {
-    if (this.operation.config?.["x-responder"]?.pass) {
-      // The user has defined behavior for this response
-      const respSpec = this.operation.config["x-responder"].pass;
-
-      return this.respond({
-        statusCode: respSpec.statusCode,
-        contentType: respSpec.contentType,
-        content: resp
-      });
-
-    } else {
-      // No user defined behavior, lets go with the default OK
-      return this.OK(resp);
-    }
-  }
-
-  fail(resp) {
-    if (this.operation.config?.["x-responder"]?.fail) {
-      // The user has defined behavior for this response
-      const respSpec = this.operation.config["x-responder"].fail;
-
-      return this.respond({
-        statusCode: respSpec.statusCode,
-        contentType: respSpec.contentType,
-        content: resp
-      });
-
-    } else {
-      // No user defined behavior, lets go with the default "Internal Server Error"
-      return this.InternalServerError(resp);
-    }
-  }
-
   // A flexible response method being able to many parameters and convert them
   // into a proper response
-  respond_new(content, respObj) {
+  respond(content, respObj) {
     const fullRespObj = craftResponse.combineResponses(respObj, this.operation.config?.responses ?? {});
     craftResponse.applySpec(fullRespObj, this.http.res);
 
@@ -66,43 +31,29 @@ class Env {
     }
   }
 
-  respond(opts) {
-    // Whie originally this was much more fleshed out.
-    // ExpressJS is so skilled in this area, we may be able to just rely on them
-    // for now.
-
-    this.http.res.status(opts.statusCode);
-
-    if (opts.contentType) {
-      this.http.res.type(opts.contentType);
-    }
-
-    if (opts.content) {
-      this.http.res.send(opts.content);
-    } else {
-      this.http.res.send();
-    }
-  }
-
   // Specific HTTP Status Code Response Helpers
-  OK(resp) {
-    return this.respond({
-      statusCode: 200,
-      content: resp
-    });
-  }
-
-  BadRequest(resp) {
-    return this.respond({
-      statusCode: 400,
-      content: resp
-    });
-  }
-
-  InternalServerError(resp) {
-    return this.respond({
-      statusCode: 500,
-      content: resp
-    });
-  }
+  // -- 1xx: Informational
+  Continue(d) { return this.respond(d, 100); }
+  // -- 2xx: Success
+  OK(d) { return this.respond(d, 200); }
+  // -- 3xx: Redirection
+  MultipleChoices(d) { return this.respond(d, 300); }
+  // -- 4xx: Client Error
+  BadRequest(d) { return this.respond(d, 400); }
+  Unauthorized(d) { return this.respond(d, 401); }
+  PaymentRequired(d) { return this.respond(d, 402); }
+  Forbidden(d) { return this.respond(d, 403); }
+  NotFound(d) { return this.respond(d, 404); }
+  // -- 5XX: Server Error
+  InternalServerError(d) { return this.respond(d, 500); }
+  NotImplemented(d) { return this.respond(d, 501); }
+  BadGateway(d) { return this.respond(d, 502); }
+  ServiceUnavailable(d) { return this.respond(d, 503); }
+  GatewayTimeout(d) { return this.respond(d, 504); }
+  HTTPVersionNotSupported(d) { return this.respond(d, 505); }
+  VariantAlsoNegotiates(d) { return this.respond(d, 506); }
+  InsufficientStorage(d) { return this.respond(d, 507); }
+  LoopDetected(d) { return this.respond(d, 508); }
+  NotExtended(d) { return this.respond(d, 510); } // OBSOLETED
+  NetworkAuthenticationRequired(d) { return this.respond(d, 511); }
 }
